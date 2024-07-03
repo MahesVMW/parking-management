@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC&display=swap');
+.custom-icon-size {
+    font-size: 2rem; 
+    color: rgb(53, 118, 214);
+  }
+  .card{
+    background-color: rgba(128, 128, 129, 0.455);
+    border: none;
+    font-family: "Merienda", cursive;
+  }
+  .card:hover{
+    background-color: rgb(132, 181, 224);
+    box-shadow: 2px 2px 2px 2px rgba(128, 128, 129, 0.455);
+  }
+  .floor{
+    background-color: rgb(94, 184, 228);
+    border: none;
+    border-radius: 10px;
+    color: white;
+  }
+  .bookslot{
+    background-color: #292727;
+    color:white;
+  }
+  .notification-message {
+    position: fixed;
+    top: 50px;
+    left: 30px;
+    padding: 10px;
+    font-size: 0.9rem;
+    z-index: 1050;
+    background-color: #006400; /* Dark green */
+  }
+  .entrycontent{
+    background-color: rgb(222, 200, 221);
+    font-family: "Merienda", cursive;
+    font-size: 15px;
+    color: #161616;
+  }
+  .checkoutcontent{
+    background-color: rgb(232, 174, 174);
+    font-family: "Merienda", cursive;
+    font-size: 15px;
+    color: #161616;
+  }
+  input[type="text"] {
+    margin-bottom: 10px;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-dialog {
+      max-width: 600px;
+    }
+  }
+  
+  .row .col-6 p {
+    margin-bottom: 0;
+  }
+  
+  .modal-body .row .col-6 p {
+    padding: 10px 0;
+  }
+  
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }

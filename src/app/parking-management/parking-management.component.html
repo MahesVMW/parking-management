@@ -1,0 +1,125 @@
+<div class="container mt-4" style="font-family: Arial, sans-serif;">
+    <h1 class="text-center">Parking Management System</h1>
+    <div class="d-flex justify-content-center mb-3">
+      <div class="btn">
+        <button type="button" class="btn floor" (click)="selectFloor(1)">Floor 1</button>
+        <button type="button" class="btn floor ml-2" (click)="selectFloor(2)">Floor 2</button>
+        <button type="button" class="btn floor ml-2" (click)="selectFloor(3)">Floor 3</button>
+      </div>
+    </div>
+    <div *ngIf="selectedFloor !== null" class="row">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let slot of slots; let i = index">
+        <div class="card text-center mb-3" [ngStyle]="{'background-color': getBackgroundColor(selectedFloor)}">
+          <div class="card-body">
+            <p class="text-left">Floor {{ selectedFloor }}</p>
+            <p>Slot {{ i + 1 }}</p>
+            <ng-container *ngIf="slot.booked">
+              <i class="fa-solid fa-car custom-icon-size"></i>
+              <p>Vehicle No: {{ slot.vehicleNo }}</p>
+              <button class="btn btn-danger" (click)="openSlot(slot)">Checkout</button>
+            </ng-container>
+            <ng-container *ngIf="!slot.booked">
+              <button class="btn bookslot" (click)="openSlot(slot)">Book Slot</button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Slot Entry Modal -->
+  <div *ngIf="selectedSlot && !selectedSlot.booked" class="modal show d-block mt-2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content entrycontent">
+        <div class="modal-header">
+          <h5 class="modal-title">Check In (Floor {{ selectedFloor }})</h5>
+          <button type="button" class="close" (click)="closeSlot()">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="entryForm" (ngSubmit)="bookSlot()">
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label for="spotNo">Spot No:</label>
+                  <input type="text" class="form-control" id="spotNo" formControlName="spotNo" readonly />
+                </div>
+                <div class="form-group">
+                  <label for="vehicleNo">Vehicle No:</label>
+                  <input type="text" class="form-control" id="vehicleNo" formControlName="vehicleNo" />
+                  <div *ngIf="isEntryFormSubmitted && entryForm.controls['vehicleNo'].invalid" class="text-danger">
+                    Vehicle Number is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label for="phoneNo">Phone No:</label>
+                  <input type="text" class="form-control" id="phoneNo" formControlName="phoneNo" />
+                  <div *ngIf="isEntryFormSubmitted && entryForm.controls['phoneNo'].invalid" class="text-danger">
+                    Phone number must be 10 digits.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inTime">In Time:</label>
+                  <input type="text" class="form-control" id="inTime" formControlName="inTime" />
+                  <div *ngIf="isEntryFormSubmitted && entryForm.controls['inTime'].invalid" class="text-danger">
+                    Time must be in HH:mm format.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Book</button>
+            <button type="button" class="btn btn-secondary ml-2" (click)="closeSlot()">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Slot Checkout Modal -->
+  <div *ngIf="selectedSlot && selectedSlot.booked" class="modal show d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content checkoutcontent">
+        <div class="modal-header">
+          <h5 class="modal-title">Check Out (Floor {{ selectedFloor }})</h5>
+          <button type="button" class="close" (click)="closeSlot()">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="checkoutForm">
+            <div class="row">
+              <div class="col-6">
+                <p><strong>Spot No:</strong></p>
+                <p><strong>Vehicle No:</strong></p>
+                <p><strong>Phone No:</strong></p>
+                <p><strong>In Time:</strong></p>
+              </div>
+              <div class="col-6">
+                <p>{{ selectedSlot.spotNo }}</p>
+                <p>{{ selectedSlot.vehicleNo }}</p>
+                <p>{{ selectedSlot.phoneNo }}</p>
+                <p>{{ selectedSlot.inTime }}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="outTime">Out Time:</label>
+              <input type="text" class="form-control" id="outTime" formControlName="outTime" />
+              <div *ngIf="isCheckoutFormSubmitted && checkoutForm.controls['outTime'].invalid" class="text-danger">
+                Out Time must be in HH:mm format.
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="markOut()">Mark Out</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Notification Message -->
+  <div *ngIf="notification" class="alert notification-message" role="alert" style="background-color: #006400; color: white;">
+    {{ notification }}
+  </div>
+  
